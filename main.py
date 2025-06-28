@@ -66,6 +66,14 @@ def set_guardrails():
         return redirect(url_for("home"))
     return render_template("set_guardrails.html", guardrails=user_data["guardrails"])
 
+@app.route("/notifications")
+def notifications():
+    notifications = [
+        {"title": "Payment Reminder", "message": "Your credit card bill is due tomorrow.", "time": "09:00 AM"},
+        {"title": "Recurring Routine", "message": "Weekly Spending Review every Saturday @ 8PM", "time": "08:00 PM"}
+    ]
+    return render_template("notifications.html", notifications=notifications)
+
 # ---- Run ----
 if __name__ == "__main__":
     app.run(debug=True)
