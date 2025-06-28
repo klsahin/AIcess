@@ -45,6 +45,13 @@
     <div id="chatWindow" class="chat-thread mb-3">
       <div class="chat-bubble bot">Hi! I'm FinBot. Ask me anything about your finances!</div>
     </div>
+
+    <div class="mb-3 d-flex flex-wrap gap-2">
+      <button class="btn btn-outline-secondary" onclick="sendChat('What are my spending limits?')">Limits</button>
+      <button class="btn btn-outline-secondary" onclick="sendChat('How can I save more?')">Savings Tips</button>
+      <button class="btn btn-outline-secondary" onclick="sendChat('What is my current spending?')">Current Spending</button>
+    </div>
+
     <div class="input-group">
       <input type="text" class="form-control" id="chatInput" placeholder="e.g., How can I save more?">
       <button class="btn btn-primary" onclick="sendChat()">Send</button>
@@ -52,9 +59,9 @@
   </div>
 
   <script>
-    async function sendChat() {
+    async function sendChat(prompt) {
       const input = document.getElementById('chatInput');
-      const message = input.value;
+      const message = prompt || input.value;
       if (!message) return;
 
       const chatWindow = document.getElementById('chatWindow');
