@@ -35,7 +35,15 @@ def home():
 def chatbot():
     user_input = request.json.get("message")
     # Simulate AI response (replace with OpenAI later)
-    response = "If you're spending $350 on food delivery, try limiting it to $200 weekly and cook 2 more meals."
+    user_input = request.json.get("message", "").strip().lower()
+    if "spending limit" in user_input:
+        response = "Your weekly spending limits are: Food Delivery $200, Groceries $300, Subscriptions $100."
+    elif "save more" in user_input:
+        response = "Try meal prepping and canceling unused subscriptions to save more each month!"
+    elif "current spending" in user_input:
+        response = "This week, you've spent $350 on food delivery, $400 on groceries, and $120 on subscriptions."
+    else:
+        response = "I'm here to help! Ask me about your spending, limits, or saving tips."
     return jsonify({"reply": response})
 
 @app.route("/guardrails")
@@ -78,14 +86,15 @@ def notifications():
 @app.route("/chat-popup")
 def chat_popup():
     return render_template("chat_popup.html")
+    
 
 @app.route("/guardrail-insights")
 def guardrail_insights():
     return render_template("guardrail_insights.html")
 
-@app.route("/")
+@app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html",reminders=user_data["reminders"])
+    return render_template("dashboard.html")
 
 # ---- Run ----
 if __name__ == "__main__":
