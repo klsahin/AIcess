@@ -31,6 +31,7 @@
         <h5 class="card-title">{{ reminder.title }}</h5>
         <p class="card-text">
           <strong>Time:</strong> {{ reminder.time }} | 
+          <strong>Urgency:</strong>
           <span class="{% if reminder.urgency == 'high' %}text-danger{% elif reminder.urgency == 'low' %}text-success{% else %}text-dark{% endif %}">
             {{ reminder.urgency|capitalize }}
           </span>
