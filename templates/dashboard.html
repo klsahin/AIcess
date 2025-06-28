@@ -51,11 +51,7 @@
   </div>
 
   {% for reminder in reminders %}
-    <div id="reminder-{{ loop.index }}" class="card mb-3 border-0 shadow-sm 
-      {% if reminder.urgency == 'high' %}bg-soft-red
-      {% elif reminder.urgency == 'low' %}bg-soft-green
-      {% else %}bg-soft-yellow
-      {% endif %} rounded-4 px-3 py-2">
+    <div class="card shadow-sm {% if reminder.urgency == 'high' %}border-danger{% elif reminder.urgency == 'low' %}border-success{% else %}border-secondary{% endif %}">
       <div class="card-body">
         <h5 class="card-title">{{ reminder.title }}</h5>
         <p class="card-text">
@@ -65,7 +61,7 @@
             {{ reminder.urgency|capitalize }}
           </span>
         </p>
-        <button class="btn btn-outline-primary btn-sm" onclick="completeReminder('reminder-{{ loop.index }}')">Mark as Done</button>
+        <button class="btn btn-outline-primary btn-sm">Mark as Done</button>
       </div>
     </div>
   {% endfor %}
@@ -87,9 +83,7 @@
   <div>
   <a href="/chat-popup" class="btn btn-outline-success">💬 Chat with FinBot</a>
   </div>
-
-  <hr class="my-4">
-
+  
   <h5>💬 Ask FinBot for help</h5>
   <div class="input-group mb-3">
     <input type="text" id="userInput" class="form-control" placeholder="e.g., Where can I cut spending?">
@@ -98,22 +92,6 @@
   <div class="alert alert-info d-none chatbot-response" id="responseBox"></div>
 
   <script>
-    // Get all reminders initially
-    const reminderElements = document.querySelectorAll('[id^="reminder-"]');
-    let totalTasks = reminderElements.length;
-    let completedTasks = 0;
-
-    function updateProgressBar() {
-      const percent = Math.round((completedTasks / totalTasks) * 100);
-      const progressBar = document.getElementById('progressBar');
-      progressBar.style.width = percent + '%';
-      progressBar.textContent = `${completedTasks}/${totalTasks} Tasks Done`;
-    
-      if (completedTasks === totalTasks) {
-        celebrate();
-      }
-    }
-
     async function sendMessage() {
       const input = document.getElementById('userInput').value;
       const resBox = document.getElementById('responseBox');
@@ -126,35 +104,7 @@
       resBox.textContent = data.reply;
       resBox.classList.remove('d-none');
     }
-
-    function completeReminder(id) {
-      const card = document.getElementById(id);
-      if (card) {
-        card.classList.add('fade-out');
-        setTimeout(() => {
-          card.remove();
-          completedTasks++;
-          updateProgressBar();
-        }, 400);
-      }
-    }
-
-    function celebrate() {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-      alert('🎉 Congratulations! You completed all tasks!');
-    }
-
-  // Initialize progress on page load
-  document.addEventListener('DOMContentLoaded', updateProgressBar);
   </script>
 
-
-
 </body>
-</html>
-
 </html>
