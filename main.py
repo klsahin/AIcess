@@ -83,9 +83,9 @@ def chat_popup():
 def guardrail_insights():
     return render_template("guardrail_insights.html")
 
-@app.route("/dashboard")
+@app.route("/")
 def dashboard():
-    return render_template("dashboard.html")
+    return render_template("dashboard.html",reminders=user_data["reminders"])
 
 # ---- Run ----
 if __name__ == "__main__":

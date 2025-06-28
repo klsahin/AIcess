@@ -26,10 +26,15 @@
   <h4 class="mb-3">👋 Hello! Here are your tasks for {{ today }}:</h4>
 
   {% for reminder in reminders %}
-    <div class="card shadow-sm">
+    <div class="card shadow-sm {% if reminder.urgency == 'high' %}border-danger{% elif reminder.urgency == 'low' %}border-success{% else %}border-secondary{% endif %}">
       <div class="card-body">
         <h5 class="card-title">{{ reminder.title }}</h5>
-        <p class="card-text"><strong>Time:</strong> {{ reminder.time }} | <strong>Urgency:</strong> {{ reminder.urgency }}</p>
+        <p class="card-text">
+          <strong>Time:</strong> {{ reminder.time }} | 
+          <span class="{% if reminder.urgency == 'high' %}text-danger{% elif reminder.urgency == 'low' %}text-success{% else %}text-dark{% endif %}">
+            {{ reminder.urgency|capitalize }}
+          </span>
+        </p>
         <button class="btn btn-outline-primary btn-sm">Mark as Done</button>
       </div>
     </div>
@@ -46,7 +51,7 @@
   <div class="d-grid gap-2">
     <a href="/notifications" class="btn btn-warning">🔔 Notifications</a>
   </div>
-  
+
   <hr class="my-4">
 
   <h5>💬 Ask FinBot for help</h5>
