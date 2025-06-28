@@ -1,0 +1,48 @@
+<!-- Enhanced set_guardrails.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Set Guardrails - FinFriendly</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+  <h4 class="mb-4">🔐 Set Your Impulse Spending Guardrails</h4>
+
+  <form method="POST" action="/set-guardrails">
+    {% for category, value in guardrails.items() %}
+      {% if category != 'spending_freeze_hours' %}
+        <div class="mb-3">
+          <label for="{{ category }}" class="form-label">
+            {{ category.replace('_', ' ').title() }} Limit ($/week)
+          </label>
+          <input type="number" class="form-control" id="{{ category }}" name="{{ category }}"
+                 value="{{ value }}" min="0" required>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="mb-3">
+      <label class="form-label">Spending Freeze Hours</label>
+      <div class="row">
+        <div class="col">
+          <label for="freeze_start" class="form-label">Start (Hour in 24h)</label>
+          <input type="number" class="form-control" id="freeze_start" name="freeze_start"
+                 value="{{ guardrails.spending_freeze_hours[0] }}" min="0" max="23" required>
+        </div>
+        <div class="col">
+          <label for="freeze_end" class="form-label">End (Hour in 24h)</label>
+          <input type="number" class="form-control" id="freeze_end" name="freeze_end"
+                 value="{{ guardrails.spending_freeze_hours[1] }}" min="0" max="23" required>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Guardrails</button>
+    <a href="/" class="btn btn-secondary ms-2">Cancel</a>
+  </form>
+
+</body>
+</html>
