@@ -70,9 +70,22 @@ def set_guardrails():
 def notifications():
     notifications = [
         {"title": "Payment Reminder", "message": "Your credit card bill is due tomorrow.", "time": "09:00 AM"},
-        {"title": "Recurring Routine", "message": "Weekly Spending Review every Saturday @ 8PM", "time": "08:00 PM"}
+        {"title": "Recurring Routine", "message": "Weekly Spending Review every Saturday @ 8PM", "time": "08:00 PM"},
+        {"title": "Impulse Guard Triggered", "message": "Spending on subscriptions exceeded your limit.", "time": "11:30 AM"}
     ]
     return render_template("notifications.html", notifications=notifications)
+
+@app.route("/chat-popup")
+def chat_popup():
+    return render_template("chat_popup.html")
+
+@app.route("/guardrail-insights")
+def guardrail_insights():
+    return render_template("guardrail_insights.html")
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
 # ---- Run ----
 if __name__ == "__main__":
