@@ -1,90 +1,82 @@
-<!-- templates/chat_popup.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>FinBot Chat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f0f2f5;
-    }
-    .chat-container {
-      max-width: 500px;
-      margin: 30px auto;
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .chat-bubble {
-      border-radius: 15px;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      max-width: 80%;
-    }
-    .user {
-      background-color: #d1e7dd;
-      align-self: flex-end;
-      text-align: right;
-    }
-    .bot {
-      background-color: #e2e3e5;
-      align-self: flex-start;
-    }
-    .chat-thread {
-      display: flex;
-      flex-direction: column;
-    }
-  </style>
-</head>
-<body>
-  <div class="chat-container">
-    <h5 class="text-center mb-3">💬 Chat with FinBot</h5>
-    <div id="chatWindow" class="chat-thread mb-3">
-      <div class="chat-bubble bot">Hi! I'm FinBot. Ask me anything about your finances!</div>
-    </div>
+{% extends "base.html" %}
 
-    <div class="mb-3 d-flex flex-wrap gap-2">
-      <button class="btn btn-outline-secondary" onclick="sendChat('What are my spending limits?')">Limits</button>
-      <button class="btn btn-outline-secondary" onclick="sendChat('How can I save more?')">Savings Tips</button>
-      <button class="btn btn-outline-secondary" onclick="sendChat('What is my current spending?')">Current Spending</button>
-    </div>
+{% block title %}FinBot Chat - FinFriendly{% endblock %}
 
-    <div class="input-group">
-      <input type="text" class="form-control" id="chatInput" placeholder="e.g., How can I save more?">
-      <button class="btn btn-primary" onclick="sendChat()">Send</button>
-    </div>
+{% block content %}
+<div class="chat-container">
+  <h5 class="text-center mb-3">💬 Chat with FinBot</h5>
+  <div id="chatWindow" class="chat-thread mb-3">
+    <div class="chat-bubble bot">Hi! I'm FinBot. Ask me anything about your finances!</div>
   </div>
 
-  <script>
-    async function sendChat(prompt) {
-      const input = document.getElementById('chatInput');
-      const message = prompt || input.value;
-      if (!message) return;
+  <div class="mb-3 d-flex flex-wrap gap-2">
+    <button class="btn btn-outline-secondary" onclick="sendChat('What are my spending limits?')">Limits</button>
+    <button class="btn btn-outline-secondary" onclick="sendChat('How can I save more?')">Savings Tips</button>
+    <button class="btn btn-outline-secondary" onclick="sendChat('What is my current spending?')">Current Spending</button>
+  </div>
 
-      const chatWindow = document.getElementById('chatWindow');
-      const userBubble = document.createElement('div');
-      userBubble.className = 'chat-bubble user';
-      userBubble.textContent = message;
-      chatWindow.appendChild(userBubble);
+  <div class="input-group">
+    <input type="text" class="form-control" id="chatInput" placeholder="e.g., How can I save more?">
+    <button class="btn btn-primary" onclick="sendChat()">Send</button>
+  </div>
+</div>
 
-      const response = await fetch('/chatbot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
-      const data = await response.json();
+<style>
+  .chat-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .chat-bubble {
+    border-radius: 15px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    max-width: 80%;
+  }
+  .user {
+    background-color: #d1e7dd;
+    align-self: flex-end;
+    text-align: right;
+  }
+  .bot {
+    background-color: #e2e3e5;
+    align-self: flex-start;
+  }
+  .chat-thread {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
 
-      const botBubble = document.createElement('div');
-      botBubble.className = 'chat-bubble bot';
-      botBubble.textContent = data.reply;
-      chatWindow.appendChild(botBubble);
+<script>
+  async function sendChat(prompt) {
+    const input = document.getElementById('chatInput');
+    const message = prompt || input.value;
+    if (!message) return;
 
-      input.value = '';
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
-  </script>
-</body>
-</html>
+    const chatWindow = document.getElementById('chatWindow');
+    const userBubble = document.createElement('div');
+    userBubble.className = 'chat-bubble user';
+    userBubble.textContent = message;
+    chatWindow.appendChild(userBubble);
+
+    const response = await fetch('/chatbot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message })
+    });
+    const data = await response.json();
+
+    const botBubble = document.createElement('div');
+    botBubble.className = 'chat-bubble bot';
+    botBubble.textContent = data.reply;
+    chatWindow.appendChild(botBubble);
+
+    input.value = '';
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+</script>
+{% endblock %}
