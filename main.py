@@ -86,7 +86,10 @@ def notifications():
 @app.route("/chat-popup")
 def chat_popup():
     return render_template("chat_popup.html")
-    
+
+@app.route("/weekly-review")
+def weekly_review():
+    return render_template("weekly_review.html")
 
 @app.route("/guardrail-insights")
 def guardrail_insights():

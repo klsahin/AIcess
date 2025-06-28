@@ -8,14 +8,18 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet"
   >
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
   <style>
     body {
       background-color: #f8f9fa;
+      padding-bottom: 80px; /* reserve space for tab bar */
     }
     .card {
       margin-bottom: 15px;
       transition: all 0.3s ease;
-
     }
     .chatbot-response {
       white-space: pre-wrap;
@@ -37,10 +41,32 @@
       opacity: 0.5;
       text-decoration: line-through;
     }
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #ffffff;
+      border-top: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      z-index: 1000;
+    }
+    .tab-bar a {
+      color: #666;
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tab-bar a.active {
+      color: #007bff;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
 </head>
+
 <body class="container py-4">
 
   <h4 class="mb-3">👋 Hello! Here are your tasks for {{ today }}:</h4>
@@ -71,24 +97,6 @@
 
   <hr class="my-4">
 
-  <div class="d-grid gap-2">
-    <a href="/set-guardrails" class="btn btn-warning">⚙️ Set Guardrails</a>
-  </div>
-
-  <hr class="my-4">
-
-  <div class="d-grid gap-2">
-    <a href="/notifications" class="btn btn-warning">🔔 Notifications</a>
-  </div>
-
-  <hr class="my-4">
-
-  <div>
-  <a href="/chat-popup" class="btn btn-outline-success">💬 Chat with FinBot</a>
-  </div>
-
-  <hr class="my-4">
-
   <h5>💬 Ask FinBot for help</h5>
   <div class="input-group mb-3">
     <input type="text" id="userInput" class="form-control" placeholder="e.g., Where can I cut spending?">
@@ -96,8 +104,31 @@
   </div>
   <div class="alert alert-info d-none chatbot-response" id="responseBox"></div>
 
+  <!-- 🧭 Bottom Navigation -->
+  <footer class="tab-bar">
+    <a href="/" class="active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/notifications">
+      <i class="fas fa-bell"></i>
+      <span>Alerts</span>
+    </a>
+    <a href="/set-guardrails">
+      <i class="fas fa-sliders-h"></i>
+      <span>Guardrails</span>
+    </a>
+    <a href="/chat-popup">
+      <i class="fas fa-comment-dots"></i>
+      <span>Chat</span>
+    </a>
+    <a href="/weekly-review">
+      <i class="fas fa-chart-bar"></i>
+      <span>Review</span>
+    </a>
+  </footer>
+
   <script>
-    // Get all reminders initially
     const reminderElements = document.querySelectorAll('[id^="reminder-"]');
     let totalTasks = reminderElements.length;
     let completedTasks = 0;
@@ -107,11 +138,9 @@
       const progressBar = document.getElementById('progressBar');
       progressBar.style.width = percent + '%';
       progressBar.textContent = `${completedTasks}/${totalTasks} Tasks Done`;
-    
-      if (completedTasks === totalTasks) {
-        celebrate();
-      }
+      if (completedTasks === totalTasks) celebrate();
     }
+
     async function sendMessage() {
       const input = document.getElementById('userInput').value;
       const resBox = document.getElementById('responseBox');
@@ -145,14 +174,32 @@
       });
       alert('🎉 Congratulations! You completed all tasks!');
     }
-    
-  // Initialize progress on page load
-  document.addEventListener('DOMContentLoaded', updateProgressBar);
+
+    document.addEventListener('DOMContentLoaded', updateProgressBar);
   </script>
-
-
+<!-- Bottom Navigation Bar -->
+<nav class="navbar fixed-bottom navbar-light bg-light border-top d-flex justify-content-around shadow-sm">
+  <a href="/" class="text-center text-decoration-none text-dark">
+    <div>🏠</div>
+    <small>Home</small>
+  </a>
+  <a href="/notifications" class="text-center text-decoration-none text-dark">
+    <div>🔔</div>
+    <small>Alerts</small>
+  </a>
+  <a href="/set-guardrails" class="text-center text-decoration-none text-dark">
+    <div>🧩</div>
+    <small>Guardrails</small>
+  </a>
+  <a href="/chat-popup" class="text-center text-decoration-none text-dark">
+    <div>💬</div>
+    <small>Chat</small>
+  </a>
+  <a href="/weekly-review" class="text-center text-decoration-none text-dark">
+    <div>📊</div>
+    <small>Review</small>
+  </a>
+</nav>
 
 </body>
-</html>
-
 </html>
