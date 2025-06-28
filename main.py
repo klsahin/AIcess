@@ -1,4 +1,3 @@
-# AIcess : NeuroBudget
 # Flask + Bootstrap Starter for FinFriendly (Mobile-Styled Web App)
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
@@ -19,8 +18,10 @@ user_data = {
         {"title": "Pay Internet Bill", "day": "Monday", "time": "10:00", "urgency": "high"}
     ],
     "guardrails": {
-        "food_delivery_limit": 200,  # weekly
-        "spending_freeze_hours": (20, 8)  # 8PM to 8AM
+        "food_delivery_limit": 200,
+        "groceries_limit": 300,
+        "subscriptions_limit": 100,
+        "spending_freeze_hours": (20, 8)
     }
 }
 
@@ -39,10 +40,31 @@ def chatbot():
 
 @app.route("/guardrails")
 def guardrails():
-    food_delivery = user_data["expenses"]["food_delivery"]
-    limit = user_data["guardrails"]["food_delivery_limit"]
-    over_limit = food_delivery > limit
-    return jsonify({"status": "over" if over_limit else "ok", "current": food_delivery, "limit": limit})
+    evaluations = {}
+    for category, value in user_data["expenses"].items():
+        limit_key = f"{category}_limit"
+        if limit_key in user_data["guardrails"]:
+            limit = user_data["guardrails"][limit_key]
+            evaluations[category] = {
+                "current": value,
+                "limit": limit,
+                "status": "over" if value > limit else "ok"
+            }
+    return jsonify(evaluations)
+
+@app.route("/set-guardrails", methods=["GET", "POST"])
+def set_guardrails():
+    if request.method == "POST":
+        data = request.form
+        for key in user_data["guardrails"]:
+            if key != "spending_freeze_hours" and key in data:
+                user_data["guardrails"][key] = int(data.get(key))
+        user_data["guardrails"]["spending_freeze_hours"] = (
+            int(data.get("freeze_start", 20)),
+            int(data.get("freeze_end", 8))
+        )
+        return redirect(url_for("home"))
+    return render_template("set_guardrails.html", guardrails=user_data["guardrails"])
 
 # ---- Run ----
 if __name__ == "__main__":
