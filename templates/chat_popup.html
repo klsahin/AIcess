@@ -40,23 +40,30 @@
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <h5 class="text-center mb-3">💬 Chat with FinBot</h5>
-    <div id="chatWindow" class="chat-thread mb-3">
-      <div class="chat-bubble bot">Hi! I'm FinBot. Ask me anything about your finances!</div>
-    </div>
+  <div style="max-width: 500px; margin: 30px auto;">
+  
+    <div class="chat-container">
+      <h5 class="text-center mb-3">💬 Chat with FinBot</h5>
+      <div id="chatWindow" class="chat-thread mb-3">
+        <div class="chat-bubble bot">Hi! I'm FinBot. Ask me anything about your finances!</div>
+      </div>
 
-    <div class="mb-3 d-flex flex-wrap gap-2">
-      <button class="btn btn-outline-secondary" onclick="sendChat('What are my spending limits?')">Limits</button>
-      <button class="btn btn-outline-secondary" onclick="sendChat('How can I save more?')">Savings Tips</button>
-      <button class="btn btn-outline-secondary" onclick="sendChat('What is my current spending?')">Current Spending</button>
-    </div>
+      <div class="mb-3 d-flex flex-wrap gap-2">
+        <button class="btn btn-outline-secondary" onclick="sendChat('What are my spending limits?')">Limits</button>
+        <button class="btn btn-outline-secondary" onclick="sendChat('How can I save more?')">Savings Tips</button>
+        <button class="btn btn-outline-secondary" onclick="sendChat('What is my current spending?')">Current Spending</button>
+      </div>
 
-    <div class="input-group">
-      <input type="text" class="form-control" id="chatInput" placeholder="e.g., How can I save more?">
-      <button class="btn btn-primary" onclick="sendChat()">Send</button>
+      <div class="input-group">
+        <input type="text" class="form-control" id="chatInput" placeholder="e.g., How can I save more?">
+        <button class="btn btn-primary" onclick="sendChat()">Send</button>
+      </div>
     </div>
+    
+    <a href="/" class="btn btn-outline-secondary mt-3">← Back to Dashboard</a>
+
   </div>
+
 
   <script>
     async function sendChat(prompt) {
